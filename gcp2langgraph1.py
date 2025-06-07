@@ -43,7 +43,7 @@ def test_graph_locally(input_data: Dict[str, Any]) -> Dict[str, Any]:
         # Initialize the langgraph client
         client = get_sync_client(
             url=os.getenv("LANGGRAPH_DEPLOYMENT_URL"),
-            api_key=os.getenv("LANGSMITH_API_KEY")
+            api_key=os.getenv("LANGGRAPH_API_KEY")
         )
         
         # Stream the graph execution
@@ -122,7 +122,7 @@ def process_with_langgraph(request: Request) -> Dict[str, Any]:
             # Use the langgraph_sdk client to call the agent
             client = get_sync_client(
                 url=os.getenv("LANGGRAPH_DEPLOYMENT_URL"),
-                api_key=os.getenv("LANGSMITH_API_KEY")
+                api_key=os.getenv("LANGGRAPH_API_KEY")
             )
             
             # Collect all chunks of data
@@ -131,8 +131,11 @@ def process_with_langgraph(request: Request) -> Dict[str, Any]:
                 None,  # Threadless run
                 "superNode",  # Name of your assistant as defined in langgraph.json
                 input={
-                    "messages": [],
-                    "step": "q1"
+                    "user_input": {
+                        "messages": [],
+                        "step": "q1"
+                    },
+                    "previous_state": None
                 },
                 stream_mode="updates",
             ):
@@ -167,9 +170,15 @@ def process_with_langgraph(request: Request) -> Dict[str, Any]:
 
 # This allows running the code locally for testing
 if __name__ == "__main__":
+
+    raw_input = {
+    "messages": [],
+    "step": "Do you have  minute to discuss Prizm Task <>"
+}
+
     # Test input data
     test_input = {
-        "user_input": "",
+        "user_input": raw_input,
         "previous_state": None
     }
     

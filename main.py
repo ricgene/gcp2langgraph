@@ -132,7 +132,7 @@ def process_with_langgraph(request: Request) -> Dict[str, Any]:
                 "superNode",  # Name of your assistant as defined in langgraph.json
                 input={
                     "messages": [],
-                    "step": "q1"
+                    "step": "Do you have  minute to discuss Prizm Task <>"
                 },
                 stream_mode="updates",
             ):
@@ -167,10 +167,15 @@ def process_with_langgraph(request: Request) -> Dict[str, Any]:
 
 # This allows running the code locally for testing
 if __name__ == "__main__":
-    # Test input data
+    raw_input = {
+        "messages": [],
+        "step": "q1"
+    }
+
+    # Your agent input
     test_input = {
         "user_input": "",
-        "previous_state": None
+        "previous_state": raw_input
     }
     
     # Run the local test
